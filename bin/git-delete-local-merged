@@ -14,7 +14,7 @@ git for-each-ref refs/heads/ --format="%(refname:short)" | while read branch
 	set base (git merge-base master $branch)
 	set hash (git rev-parse "$branch^{tree}")
 	set commit (git commit-tree $hash -p $base -m _)
-	if test (git cherry master "$commit") == "-"*
+	if test (git cherry master $commit) = "- $commit"
 		git branch -D $branch
 	end
 end
