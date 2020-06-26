@@ -1,0 +1,20 @@
+#!/usr/bin/env fish
+function log
+	echo (set_color --bold magenta) "-----> $argv" (set_color normal)
+end
+
+log "Removing merged branches..."
+set branches (git branch --merged | grep -v "^\*" | grep -v 'master' | tr -d '\n')
+if test -n $branches
+	echo "$branches" | xargs git branch -d
+end
+
+log "Removing squashed and merged branches..."
+git for-each-ref refs/heads/ --format="%(refname:short)" | while read branch
+	set base (git merge-base master $branch)
+	set hash (git rev-parse "$branch^{tree}")
+	set commit (git commit-tree $hash -p $base -m _)
+	if test (git cherry master "$commit") == "-"*
+		git branch -D $branch
+	end
+end
