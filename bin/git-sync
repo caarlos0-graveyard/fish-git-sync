@@ -15,7 +15,7 @@ function merge_locally
 	log "Merging $remote/$branch locally..."
 	git fetch $remote
 		and git merge --no-edit $remote/$branch
-}
+end
 
 function push_to_fork
 	set remote $argv[1]
