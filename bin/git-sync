@@ -36,5 +36,5 @@ prune $remote
 	and merge_locally $remote $branch
 	and push_to_fork $remote $branch
 	and git branch -u $remote/$branch
-	and git delete-local-merged
+	and delete-local-merged
 	and log "All done!"
